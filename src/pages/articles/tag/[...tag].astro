@@ -1,21 +1,13 @@
 ---
 import MainLayout from "../../../layouts/MainLayout.astro";
-import { getCollection } from "astro:content";
-import type { CollectionEntry } from "astro:content";
 import ArticleCard from "../../../components/ArticleCard.astro";
-import { capitalize } from "../../../utils";
+import { allBlogArticles, capitalize } from "../../../utils";
 
 const { tag } = Astro.params;
 
 if (!tag) {
   throw new Error("No tag provided");
 }
-
-const allBlogArticles: CollectionEntry<"blog">[] = (
-  await getCollection("blog")
-).sort((a: CollectionEntry<"blog">, b: CollectionEntry<"blog">) => {
-  return (b.data.pubDate.valueOf() - a.data.pubDate).valueOf();
-});
 
 const tagArticles = allBlogArticles.filter((article) => {
   return article.data.tags.includes(tag);
